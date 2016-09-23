@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Calendario</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <script>
+            function calendario()
+            {
+                var f = new Date();
+                var fecha = new Date(f.getFullYear(), f.getMonth(), 1);
+                var mesActual = fecha.getMonth();
+                var ultimoDia = new Date(f.getFullYear(), f.getMonth() + 1, 0);
+                var diaMes = fecha.getDay()-1;
+                var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+                var dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+                mihtml = "<table borde=1>";
+                mihtml += "<caption><font size=24>" + meses[mesActual] + "</font></caption>";
+                mihtml += "<tr>";
+                for (i = 0; i < dias.length; i++) {
+                    mihtml += "<td>" + dias[i] + "</td>";
+                }
+                mihtml += "</tr>";
+                for (i = 0; i < ultimoDia; i++) {
+                    
+                }
+
+                mihtml += "</table>";
+
+                document.getElementById("contenedor").innerHTML = mihtml;
+
+            }
+        </script>
+    </head>
+    <body>
+        <div id="top" align="center">
+            <button onclick="calendario()">Crear Calendario</button>
+        </div>
+        <br>
+        <div id="contenedor" align="center">
+
+        </div>
+    </body>
+</html>
