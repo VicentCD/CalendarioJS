@@ -1,0 +1,55 @@
+table,.cabecera {
+    border: 1px solid black;
+}
+
+table {
+    border-collapse: collapse;
+    text-align: center;
+    font-family: Arial;
+}
+.cabecera {
+    text-align: center;
+    background-color: gainsboro;
+}
+
+tr {
+    background-color: antiquewhite;
+}
+
+.vacio {
+    background-color: wheat;
+}
+.vacio,.dias {
+    padding: 1em 1em;
+}
+
+.dias:hover {
+     border: 1px black solid;  
+     background-color: gainsboro;
+     font-weight: bold;
+     
+}
+
+.dias_nombre {
+    padding: 1em 1em;
+    border-bottom: 1px black solid; 
+    font-weight: bold;
+}
+
+.mes {
+    padding: 1em 2em;
+    text-align: center;
+}
+
+.flechas {
+   text-decoration: none;
+}
+
+.flechas:hover {
+    color: blue;
+}
+
+#hoy {
+    background-color: #ff66ff;
+    font-weight: bold;
+}
