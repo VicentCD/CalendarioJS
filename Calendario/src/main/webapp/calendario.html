@@ -2,28 +2,107 @@
 <html>
     <head>
         <title>Calendario</title>
+        <link rel="stylesheet" href="./calendario.css" type="text/css" media="all" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
         <script>
-            function calendario()
+            contador = 0;
+            function calendario(num)
             {
-                var f = new Date();
-                var fecha = new Date(f.getFullYear(), f.getMonth(), 1);
-                var mesActual = fecha.getMonth();
-                var ultimoDia = new Date(f.getFullYear(), f.getMonth() + 1, 0);
-                var diaMes = fecha.getDay()-1;
+                //Creamos esta fecha para comparar con la actual, ya que la otra será manipulada
+                var fechaHoy = new Date();
+                fechaHoy.setHours(0, 0, 0, 0);
+                
+                var fechaActual = new Date();
+                if (num === 1) {
+                    contador--;
+                    fechaActual.setMonth(fechaActual.getMonth() + contador);
+                }
+                if (num === 2) {
+                    contador++;
+                    fechaActual.setMonth(fechaActual.getMonth() + contador);
+                }
+
+                if (isNaN(num)) {
+                    contador = 0;
+                }
+
+                var fechaDiaUno = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 1);
+                var fechaUltimoDia = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 0);
+                var mesActual = fechaActual.getMonth();
+                var ultimoDia = fechaUltimoDia.getDate();
+                //Se le pone menos uno porque te da la semana del 1-0 y lo quiero del 0-6 para el vector
+                var posicionSemana = fechaDiaUno.getDay() - 1;
+                //Da -1 ya que al coger el dato domingo es 0 por America
+                if (posicionSemana === -1) {
+                    posicionSemana = 6;
+                }
                 var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
                 var dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado", "Domingo"];
-                mihtml = "<table borde=1>";
-                mihtml += "<caption><font size=24>" + meses[mesActual] + "</font></caption>";
+
+                mihtml = "<table border=0>";
+                mihtml += "<tr class=cabecera><th><a class=flechas href=# onclick=calendario(1);return false;><font size=6><<</font></a></th><th class=mes colspan=5><font  size=19>" + meses[mesActual] + "\t</font><font size=3>" + fechaActual.getFullYear() + "</font></th><th><a class=flechas href=# onclick=calendario(2);return false;><font size=6>>></font></a></th></tr>";
                 mihtml += "<tr>";
                 for (i = 0; i < dias.length; i++) {
-                    mihtml += "<td>" + dias[i] + "</td>";
+                    mihtml += "<td class=dias_nombre>" + dias[i] + "</td>";
                 }
                 mihtml += "</tr>";
-                for (i = 0; i < ultimoDia; i++) {
-                    
+
+                //Rellena dias que no empieza en lunes
+                if (posicionSemana !== 0) {
+                    mihtml += "<tr>";
+                    for (f = 0; f < posicionSemana; f++) {
+                        mihtml += "<td class=vacio></td>";
+                    }
                 }
+
+                //Empieza a poner dias
+                for (i = 1; i <= ultimoDia; i++)
+                {
+                    var prueba = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), i);
+                    if (posicionSemana === 0) {
+                        if (fechaHoy.getTime() === prueba.getTime()) {
+                            mihtml += "<tr>";
+                            mihtml += "<td class=dias id=hoy>" + i + "</td>";
+                        } else {
+                            mihtml += "<tr>";
+                            mihtml += "<td class=dias>" + i + "</td>";
+                        }
+                        posicionSemana++;
+
+                    } else if (posicionSemana === 6) {
+                        if (fechaHoy.getTime() === prueba.getTime()) {
+                            mihtml += "<td class=dias id=hoy>" + i + "</td>";
+                            mihtml += "</tr>";
+                        } else {
+                            mihtml += "<td class=dias>" + i + "</td>";
+                            mihtml += "</tr>";
+                        }
+                        posicionSemana = 0;
+
+                    } else {
+                        if (fechaHoy.getTime() === prueba.getTime()) {
+                            mihtml += "<td class=dias id=hoy>" + i + "</td>";
+                        } else {
+                            mihtml += "<td class=dias>" + i + "</td>";
+                        }
+                        posicionSemana++;
+                    }
+                }
+
+                //Rellena los huecos finales vacios del calendario
+                if (posicionSemana === 0) {
+                    posicionSemana = 7;
+                }
+
+                while (posicionSemana <= 6) {
+                    mihtml += "<td class=vacio></td>";
+                    if (posicionSemana === 6) {
+                        mihtml += "</tr>";
+                    }
+                    posicionSemana++;
+                }
+
 
                 mihtml += "</table>";
 
@@ -34,8 +113,9 @@
     </head>
     <body>
         <div id="top" align="center">
-            <button onclick="calendario()">Crear Calendario</button>
+            <button onclick="calendario()">Calendario Actual</button>
         </div>
+        <br>
         <br>
         <div id="contenedor" align="center">
 
