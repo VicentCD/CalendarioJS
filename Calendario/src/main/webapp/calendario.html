@@ -7,13 +7,22 @@
 
         <script>
             contador = 0;
-            function calendario(mes, anyo)
-            {
+            function calendario(mes,anyo)
+            {   
+
+//                alert(mes,anyo);
                 //Creamos esta fecha para comparar con la actual, ya que la otra será manipulada
                 var fechaHoy = new Date();
                 fechaHoy.setHours(0, 0, 0, 0);
 
                 var fechaActual = new Date();
+                
+//                if(isNaN(anyo)) {
+//                    fechaActual.setFullYear(fechaActual.getFullYear());
+//                } else {
+//                    fechaActual.setFullYear(anyo);
+//                }
+                
                 if (mes === 12) {
                     contador--;
                     fechaActual.setMonth(fechaActual.getMonth() + contador);
@@ -22,7 +31,7 @@
                     contador++;
                     fechaActual.setMonth(fechaActual.getMonth() + contador);
                 }
-                if (mes === [0 - 11]) {
+                if (mes >= 0 && mes <=11) {
                     fechaActual.setMonth(mes);
                 }
 
@@ -65,9 +74,9 @@
                 //Empieza a poner dias
                 for (i = 1; i <= ultimoDia; i++)
                 {
-                    var prueba = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), i);
+                    var comparador = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), i);
                     if (posicionSemana === 0) {
-                        if (fechaHoy.getTime() === prueba.getTime()) {
+                        if (fechaHoy.getTime() === comparador.getTime()) {
                             mihtml += "<tr>";
                             mihtml += "<td class=dias id=hoy>" + i + "</td>";
                         } else {
@@ -77,7 +86,7 @@
                         posicionSemana++;
 
                     } else if (posicionSemana === 6) {
-                        if (fechaHoy.getTime() === prueba.getTime()) {
+                        if (fechaHoy.getTime() === comparador.getTime()) {
                             mihtml += "<td class=dias id=hoy>" + i + "</td>";
                             mihtml += "</tr>";
                         } else {
@@ -87,7 +96,7 @@
                         posicionSemana = 0;
 
                     } else {
-                        if (fechaHoy.getTime() === prueba.getTime()) {
+                        if (fechaHoy.getTime() === comparador.getTime()) {
                             mihtml += "<td class=dias id=hoy>" + i + "</td>";
                         } else {
                             mihtml += "<td class=dias>" + i + "</td>";
@@ -112,78 +121,77 @@
 
                 mihtml += "</table>";
 
-//                mihtml += "<br>";
-//                mihtml += "<form name=mes_anyo action=javascript:calendario() method=POST enctype=text/plain>";
-//                mihtml += "<select name=mes>";
-//                if (fechaActual.getMonth() === 0) {
-//                    mihtml += "<option value=0 SELECTED>Enero</option>";
-//                } else {
-//                    mihtml += "<option value=0>Enero</option>";
-//                }
-//                if (fechaActual.getMonth() === 1) {
-//                    mihtml += "<option value=1 SELECTED>Febrero</option>";
-//                } else {
-//                    mihtml += "<option value=1>Febrero</option>";
-//                }
-//                if (fechaActual.getMonth() === 2) {
-//                    mihtml += "<option value=2 SELECTED>Marzo</option>";
-//                } else {
-//                    mihtml += "<option value=2>Marzo</option>";
-//                }
-//                if (fechaActual.getMonth() === 3) {
-//                    mihtml += "<option value=3 SELECTED>Abril</option>";
-//                } else {
-//                    mihtml += "<option value=3>Abril</option>";
-//                }
-//                if (fechaActual.getMonth() === 4) {
-//                    mihtml += "<option value=4 SELECTED>Mayo</option>";
-//                } else {
-//                    mihtml += "<option value=4>Mayo</option>";
-//                }
-//                if (fechaActual.getMonth() === 5) {
-//                    mihtml += "<option value=5 SELECTED>Junio</option>";
-//                } else {
-//                    mihtml += "<option value=5>Junio</option>";
-//                }
-//                if (fechaActual.getMonth() === 6) {
-//                    mihtml += "<option value=6 SELECTED>Julio</option>";
-//                } else {
-//                    mihtml += "<option value=6>Julio</option>";
-//                }
-//                if (fechaActual.getMonth() === 7) {
-//                    mihtml += "<option value=7 SELECTED>Agosto</option>";
-//                } else {
-//                    mihtml += "<option value=7>Agosto</option>";
-//                }
-//                if (fechaActual.getMonth() === 8) {
-//                    mihtml += "<option value=8 SELECTED>Septiembre</option>";
-//                } else {
-//                    mihtml += "<option value=8>Septiembre</option>";
-//                }
-//                if (fechaActual.getMonth() === 9) {
-//                    mihtml += "<option value=9 SELECTED>Octubre</option>";
-//                } else {
-//                    mihtml += "<option value=9>Octubre</option>";
-//                }
-//                if (fechaActual.getMonth() === 10) {
-//                    mihtml += "<option value=10 SELECTED>Noviembre</option>";
-//                } else {
-//                    mihtml += "<option value=10>Noviembre</option>";
-//                }
-//                if (fechaActual.getMonth() === 11) {
-//                    mihtml += "<option value=11 SELECTED>Diciembre</option>";
-//                } else {
-//                    mihtml += "<option value=11>Diciembre</option>";
-//                }
-//                mihtml += "</select>";
-//                
-//                mihtml +="<input type=text name=anyo size=9 value=></input>";
-//                mihtml +="<input type=submit value=Ir />"
-//                
-//                mihtml +="</form>";
+                mihtml += "<br>";
+                mihtml += "<select id=mes_selector name=selector>";
+                if (fechaActual.getMonth() === 0) {
+                    mihtml += "<option value=0 SELECTED>Enero</option>";
+                } else {
+                    mihtml += "<option value=0>Enero</option>";
+                }
+                if (fechaActual.getMonth() === 1) {
+                    mihtml += "<option value=1 SELECTED>Febrero</option>";
+                } else {
+                    mihtml += "<option value=1>Febrero</option>";
+                }
+                if (fechaActual.getMonth() === 2) {
+                    mihtml += "<option value=2 SELECTED>Marzo</option>";
+                } else {
+                    mihtml += "<option value=2>Marzo</option>";
+                }
+                if (fechaActual.getMonth() === 3) {
+                    mihtml += "<option value=3 SELECTED>Abril</option>";
+                } else {
+                    mihtml += "<option value=3>Abril</option>";
+                }
+                if (fechaActual.getMonth() === 4) {
+                    mihtml += "<option value=4 SELECTED>Mayo</option>";
+                } else {
+                    mihtml += "<option value=4>Mayo</option>";
+                }
+                if (fechaActual.getMonth() === 5) {
+                    mihtml += "<option value=5 SELECTED>Junio</option>";
+                } else {
+                    mihtml += "<option value=5>Junio</option>";
+                }
+                if (fechaActual.getMonth() === 6) {
+                    mihtml += "<option value=6 SELECTED>Julio</option>";
+                } else {
+                    mihtml += "<option value=6>Julio</option>";
+                }
+                if (fechaActual.getMonth() === 7) {
+                    mihtml += "<option value=7 SELECTED>Agosto</option>";
+                } else {
+                    mihtml += "<option value=7>Agosto</option>";
+                }
+                if (fechaActual.getMonth() === 8) {
+                    mihtml += "<option value=8 SELECTED>Septiembre</option>";
+                } else {
+                    mihtml += "<option value=8>Septiembre</option>";
+                }
+                if (fechaActual.getMonth() === 9) {
+                    mihtml += "<option value=9 SELECTED>Octubre</option>";
+                } else {
+                    mihtml += "<option value=9>Octubre</option>";
+                }
+                if (fechaActual.getMonth() === 10) {
+                    mihtml += "<option value=10 SELECTED>Noviembre</option>";
+                } else {
+                    mihtml += "<option value=10>Noviembre</option>";
+                }
+                if (fechaActual.getMonth() === 11) {
+                    mihtml += "<option value=11 SELECTED>Diciembre</option>";
+                } else {
+                    mihtml += "<option value=11>Diciembre</option>";
+                }
+                mihtml += "</select>";
+
+                mihtml += "<input type=text name=texto size=9 id=anyo_texto></input>";
+//                mihtml +="<button value=Ir onclick=calendario("+document.getElementById("mes_selector").value+","+document.getElementById("anyo_texto").value+")>Ir</button>";
+                mihtml += "<button value=Ir onclick=calendario(6,2016)>Ir</button>";
+                
+
 
                 document.getElementById("contenedor").innerHTML = mihtml;
-
             }
         </script>
     </head>
