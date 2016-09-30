@@ -15,7 +15,7 @@
                 var fechaHoy = new Date();
                 fechaHoy.setHours(0, 0, 0, 0);
 
-                var fechaActual = new Date();
+                var fechaActual = new Date(fechaHoy.getFullYear(), fechaHoy.getMonth(), 1);
                 
 //                if(isNaN(anyo)) {
 //                    fechaActual.setFullYear(fechaActual.getFullYear());
@@ -39,12 +39,11 @@
                     contador = 0;
                 }
 
-                var fechaDiaUno = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 1);
                 var fechaUltimoDia = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 0);
                 var mesActual = fechaActual.getMonth();
                 var ultimoDia = fechaUltimoDia.getDate();
                 //Se le pone menos uno porque te da la semana del 1-0 y lo quiero del 0-6 para el vector
-                var posicionSemana = fechaDiaUno.getDay() - 1;
+                var posicionSemana = fechaActual.getDay() - 1;
                 //Da -1 ya que al coger el dato domingo es 0 por America
                 if (posicionSemana === -1) {
                     posicionSemana = 6;
