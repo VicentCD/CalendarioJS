@@ -5,6 +5,10 @@
         <link rel="stylesheet" href="./calendario.css" type="text/css" media="all" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+        <!--Carga de librerias jQuery-->
+        <script src="http://code.jquery.com/jquery-1.9.1.js" type="text/javascript"></script>
+        <script src="js/jquery.maskedinput.min.js" type="text/javascript"></script>
+
         <script>
             avanzames = 0;
             function calendario(mes, anyo)
@@ -13,13 +17,13 @@
                 var fechaHoy = new Date();
                 fechaHoy.setHours(0, 0, 0, 0);
 
+                //Tratamiento de Fecha
                 if (isNaN(anyo)) {
                     anyo = fechaHoy.getFullYear();
                 }
 
                 var fechaActual = new Date(anyo, fechaHoy.getMonth(), 1);
-                
-                //Tratamiento de Fecha
+
                 if (mes === 12) {
                     avanzames--;
                     if (avanzames === -1) {
@@ -46,7 +50,7 @@
                 if (isNaN(mes)) {
                     avanzames = fechaActual.getMonth();
                 }
-                
+
                 //Declaración de variables
                 var fechaUltimoDia = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 0);
                 var mesActual = fechaActual.getMonth();
@@ -59,7 +63,7 @@
                 }
                 var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
                 var dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado", "Domingo"];
-                
+
                 //Construción de calendario
                 mihtml = "<table border=0>";
                 mihtml += "<tr class=cabecera>\n\
@@ -94,12 +98,20 @@
                         }
                         posicionSemana++;
 
+                    } else if (posicionSemana === 5) {
+                        if (fechaHoy.getTime() === comparador.getTime()) {
+                            mihtml += "<td class=dias id=hoy>" + i + "</td>";
+                        } else {
+                            mihtml += "<td class=finde>" + i + "</td>";
+                        }
+                        posicionSemana++;
+
                     } else if (posicionSemana === 6) {
                         if (fechaHoy.getTime() === comparador.getTime()) {
                             mihtml += "<td class=dias id=hoy>" + i + "</td>";
                             mihtml += "</tr>";
                         } else {
-                            mihtml += "<td class=dias>" + i + "</td>";
+                            mihtml += "<td class=finde>" + i + "</td>";
                             mihtml += "</tr>";
                         }
                         posicionSemana = 0;
@@ -130,52 +142,72 @@
                 mihtml += "</table>";
 
                 document.getElementById("contenedor").innerHTML = mihtml;
+
+                //Volvemos visibles los div's
+                document.getElementById("buscador1").setAttribute("style", "visibility:visible");
+                document.getElementById("buscador2").setAttribute("style", "visibility:visible");
+
+                //Funcion jQuery para utilizar máscaras en los campos html
+                jQuery(function ($) {
+                    $("#texto__anyo").mask("9999");
+                    $("#fecha").mask("99/99/9999");
+                });
             }
             
-            function selector(){
+            //Trata datos del selector y llama al calendario
+            function selector() {
                 var mes_selector = document.getElementById("selector__mes").value;
                 var anyo_texto;
-                
-                if(document.getElementById("texto__anyo").value === "") {
+
+                if (document.getElementById("texto__anyo").value === "") {
                     var fechaHoy = new Date();
                     anyo_texto = fechaHoy.getFullYear();
                 } else {
                     anyo_texto = document.getElementById("texto__anyo").value;
                 }
-                
-                calendario(mes_selector,anyo_texto);
+                calendario(mes_selector, anyo_texto);
+            }
+            
+            //Trata datos del buscador y llama al calendario
+            function buscador() {
+                var fecha_buscador = document.getElementById("fecha").value;
+                var troceado = fecha_buscador.split("/");
+                calendario(troceado[1] - 1, troceado[2]);
             }
         </script>
     </head>
+
     <body>
         <div id="top" align="center">
-            <button onclick="calendario()">Calendario Actual</button>
+            <button onclick="calendario()">Fecha Actual</button>
         </div>
         <br>
         <br>
         <div id="contenedor" align="center">
         </div>
         <br>
-        <div align="center">
-                <select id="selector__mes">
-                    <option value="0" SELECTED>Enero</option>
-                    <option value="1">Febrero</option>
-                    <option value="2">Marzo</option>
-                    <option value="3">Abril</option>
-                    <option value="4">Mayo</option>
-                    <option value="5">Junio</option>
-                    <option value="6">Julio</option>
-                    <option value="7">Agosto</option>
-                    <option value="8">Septiembre</option>
-                    <option value="9">Octubre</option>
-                    <option value="10">Noviembre</option>
-                    <option value="11">Diciembre</option>
-                </select><input type="text" id="texto__anyo" size="9" />
-                <button value="Ir" onclick="javascript:selector()">Ir</button>
+        <div id="buscador1" align="center" style="visibility:hidden">
+            <select id="selector__mes" style="height:1.6em;">
+                <option value="0" SELECTED>Enero</option>
+                <option value="1">Febrero</option>
+                <option value="2">Marzo</option>
+                <option value="3">Abril</option>
+                <option value="4">Mayo</option>
+                <option value="5">Junio</option>
+                <option value="6">Julio</option>
+                <option value="7">Agosto</option>
+                <option value="8">Septiembre</option>
+                <option value="9">Octubre</option>
+                <option value="10">Noviembre</option>
+                <option value="11">Diciembre</option>
+            </select>
+            <input type="text" name="texto__anyo" id="texto__anyo" size="9" placeholder="Año (Actual)" value=""/>
+            <button value="Ir" onclick="javascript:selector()">Ir</button>
         </div>
         <br>
-        <div align="center">
-            
+        <div id="buscador2" align="center" style="visibility:hidden">
+            <input type="text" name="fecha" id="fecha" size="11"  placeholder="dd/MM/YYYY" value=""/>
+            <button value="Ir" onclick="javascript:buscador()">Ir</button>
         </div>
     </body>
 </html>

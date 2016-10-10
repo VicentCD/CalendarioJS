@@ -17,22 +17,34 @@ tr {
 }
 
 .vacio {
-    background-color: wheat;
+    background-color: beige;
 }
+
 .vacio,.dias {
     padding: 1em 1em;
 }
 
 .dias:hover {
-     border: 1px black solid;  
-     background-color: gainsboro;
-     font-weight: bold;
-     
+    border: 1px black solid;  
+    background-color: gainsboro;
+    font-weight: bold;
+
 }
 
 .dias_nombre {
     padding: 1em 1em;
     border-bottom: 1px black solid; 
+    font-weight: bold;
+}
+
+.finde {
+    padding: 1em 1em;
+    background-color: wheat;
+}
+
+.finde:hover {
+    border: 1px black solid;  
+    background-color: gainsboro;
     font-weight: bold;
 }
 
@@ -42,7 +54,7 @@ tr {
 }
 
 .flechas {
-   text-decoration: none;
+    text-decoration: none;
 }
 
 .flechas:hover {
@@ -50,6 +62,6 @@ tr {
 }
 
 #hoy {
-    background-color: #ff66ff;
+    background-color: coral;
     font-weight: bold;
 }
